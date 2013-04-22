@@ -60,7 +60,7 @@ public class SBManager {
 	public int getTokens(Player p){
 		File file = new File("plugins/MinecraftTD/players" + p.getName() + ".yml");
 		YamlConfiguration aa = YamlConfiguration.loadConfiguration(file);
-		return aa.getInt("Points.points");
+		return aa.getInt("Points");
 	}
 
 	public void setKills(Player p, int Kills){
@@ -84,7 +84,7 @@ public class SBManager {
 	public void setTokens(Player p, int Tokens){
 		File file = new File("plugins/MinecraftTD/players/" + p.getName() + ".yml");
 		YamlConfiguration a = YamlConfiguration.loadConfiguration(file);
-		a.set("Points.points", Tokens);
+		a.set("Points", Tokens);
 		try {
 			a.save(file);
 		} catch (Exception e){e.printStackTrace();}
@@ -101,10 +101,11 @@ public class SBManager {
 		plugin.saveConfig();
 	}
 
+	/*
 	public void setRedTeam(Player p){
 		ScoreboardManager manager = Bukkit.getScoreboardManager();
 		Scoreboard board = manager.getNewScoreboard();
-		Objective objective = board.registerNewObjective("§0[§4Red§0]§7", "dummy");
+		Objective objective = board.registerNewObjective("§0[§4Red§0]§7", "§0[§4Red§0]§7");
 		if(plugin.teams.playerIsOnRed(p)){
 			objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
 		}
@@ -114,10 +115,11 @@ public class SBManager {
 	public void setBlueTeam(Player p){
 		ScoreboardManager manager = Bukkit.getScoreboardManager();
 		Scoreboard board = manager.getNewScoreboard();
-		Objective objective = board.registerNewObjective("§0[§1Blue§0]§7", "dummy");
+		Objective objective = board.registerNewObjective("§0[§1Blue§0]§7", "§0[§1Blue§0]§7");
 		if(plugin.teams.playerIsOnBlue(p)){
 			objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
 		}
 		p.setScoreboard(board);
 	}
+	 */
 }

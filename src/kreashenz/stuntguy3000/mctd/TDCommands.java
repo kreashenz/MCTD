@@ -62,14 +62,14 @@ public class TDCommands implements CommandExecutor {
 							if(a.playerIsNotPlaying(p) && !a.playerIsOnRed(p)){
 								a.isOnBlue.add(p.getName());
 								p.sendMessage("§aJoined the §bblue §ateam!");
-								plugin.sb.setBlueTeam(p);
+//								plugin.sb.setBlueTeam(p);
 							} else p.sendMessage("§cYou have already chosen your team.");
 						}
 						if(args[1].equalsIgnoreCase("red")){
 							if(a.playerIsNotPlaying(p) && !a.playerIsOnBlue(p)){
 								a.isOnRed.add(p.getName());
 								p.sendMessage("§aJoined the §4red §ateam!");
-								plugin.sb.setRedTeam(p);
+//								plugin.sb.setRedTeam(p);
 							} else p.sendMessage("§cYou have already chosen your team.");
 						}
 						if(!(args[1].equalsIgnoreCase("red") || args[1].equalsIgnoreCase("blue"))){

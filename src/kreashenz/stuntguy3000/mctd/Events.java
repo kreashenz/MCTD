@@ -4,15 +4,15 @@ import java.io.File;
 
 import net.minecraft.server.v1_5_R2.Packet205ClientCommand;
 
-import org.bukkit.block.Block;
-import org.bukkit.block.Dispenser;
-import org.bukkit.craftbukkit.v1_5_R2.entity.CraftPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.Dispenser;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.craftbukkit.v1_5_R2.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
@@ -21,9 +21,12 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockDispenseEvent;
-import org.bukkit.event.entity.*;
-import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
-import org.bukkit.event.player.*;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -151,28 +154,26 @@ public class Events implements Listener {
 			if (p.getItemInHand().getType() == Material.MONSTER_EGG){
 				if(plugin.teams.playerIsOnBlue(p)){
 					e.setCancelled(true);
-					Skeleton b = p.getWorld().spawn(p.getLocation(), Skeleton.class);
+					Location loc = p.getLocation();
+//					Location l = new Location(l.getWorld(), l.getX(), l.getWorld().getMaxHeight(), l.getZ());
+					Skeleton b = p.getWorld().spawn(loc, Skeleton.class);
 					b.setCustomName("§0[§1BLUE§0]");
 					b.setCustomNameVisible(true);
+					b.getEquipment().setItemInHand(new ItemStack(Material.BOW));
 					plugin.freezeTask.addMob(b, b.getLocation());
 				}
 				if(plugin.teams.playerIsOnRed(p)){
 					e.setCancelled(true);
-					Skeleton b = p.getWorld().spawn(p.getLocation(), Skeleton.class);
+					Location l = p.getLocation();
+					//Location loc = new Location(l.getWorld(), l.getBlockX(), l.getWorld().getMaxHeight(), l.getBlockZ());
+					//                    Location location = new Location(user.getWorld(), topX, user.getWorld().getMaxHeight(), topZ);
+					Skeleton b = p.getWorld().spawn(l, Skeleton.class);
 					b.setCustomName("§0[§4RED§0]");
 					b.setCustomNameVisible(true);
+					b.getEquipment().setItemInHand(new ItemStack(Material.BOW));
 					plugin.freezeTask.addMob(b, b.getLocation());
 				}
 			}
-		}
-	}
-
-	@EventHandler
-	public void playerPlaceMobEgg(CreatureSpawnEvent e){
-		if(e.getSpawnReason() == SpawnReason.SPAWNER_EGG || e.getSpawnReason() == SpawnReason.EGG){
-			e.setCancelled(true);
-		} else {
-			e.setCancelled(false);
 		}
 	}
 
@@ -188,6 +189,7 @@ public class Events implements Listener {
 			p.setDisplayName("§4" + p.getName() + "§r");
 		}
 		if(plugin.teams.playerIsNotPlaying(p)){
+			p.setDisplayName("§r" + p.getName());
 			e.setMessage(e.getMessage());
 		}
 	}

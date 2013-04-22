@@ -9,7 +9,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class MCTD extends JavaPlugin {
 
-	Points points = new Points();
 	TeamManager teams = new TeamManager(this);
 	SBManager sb = new SBManager(this);
 	Enums enums = new Enums();

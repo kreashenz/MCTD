@@ -1,15 +1,15 @@
 package kreashenz.stuntguy3000.mctd;
 
 import java.util.HashMap;
-import java.util.UUID;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Skeleton.SkeletonType;
-//import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.EntityEquipment;
@@ -20,19 +20,19 @@ public class Upgrade implements Listener {
 	public static MCTD plugin;
 	public Upgrade(MCTD plugin){Upgrade.plugin=plugin;}
 
-	public static HashMap<UUID, Location> a = new HashMap<UUID, Location>();
-	public static HashMap<UUID, Location> b = new HashMap<UUID, Location>();
-	public static HashMap<UUID, Location> c = new HashMap<UUID, Location>();
-	public static HashMap<UUID, Location> d = new HashMap<UUID, Location>();
-	public static HashMap<UUID, Location> e = new HashMap<UUID, Location>();
+	public static HashMap<Entity, Location> a = new HashMap<Entity, Location>(); // level 1
+	public static HashMap<Entity, Location> b = new HashMap<Entity, Location>(); // level 2
+	public static HashMap<Entity, Location> c = new HashMap<Entity, Location>(); // level 3
+	public static HashMap<Entity, Location> d = new HashMap<Entity, Location>(); // level 4
+	public static HashMap<Entity, Location> e = new HashMap<Entity, Location>(); // level 5
 
-	//@EventHandler /*lets not register it at the moment */
+	@EventHandler /*lets not register it at the moment */
 	public void onPlayerUpgradeTower(PlayerInteractEntityEvent e){
 		Player p = e.getPlayer();
 		if(e.getRightClicked() instanceof Skeleton){
 			Skeleton skeleton = (Skeleton) e.getRightClicked();
 			EntityEquipment skele = skeleton.getEquipment();
-			if(!a.isEmpty()){
+			if(b.containsKey(e.getRightClicked())){
 				if(Points.hasEnough(p, plugin.getConfig().getDouble("Skeleton.upgrade-Level1"))){
 					Points.takePoints(p, plugin.getConfig().getDouble("Skeleton.upgrade-Level1"));
 					skele.setHelmet(new ItemStack(Material.LEATHER_HELMET, 1));
@@ -44,7 +44,7 @@ public class Upgrade implements Listener {
 					skele.setItemInHand(bow);
 				} else p.sendMessage("§cYou do not have enough money to upgrade that tower.");
 			}
-			if(!b.isEmpty()){
+			if(!c.isEmpty()){
 				if(Points.hasEnough(p, plugin.getConfig().getDouble("Skeleton.upgrade-Level2"))){
 					Points.takePoints(p, plugin.getConfig().getDouble("Skeleton.upgrade-Level2"));
 					skele.setHelmet(new ItemStack(Material.CHAINMAIL_HELMET, 1));
@@ -57,7 +57,7 @@ public class Upgrade implements Listener {
 					skele.setItemInHand(bow);
 				} else p.sendMessage("§cYou do not have enough money to upgrade that tower.");
 			}
-			if(!c.isEmpty()){
+			if(!d.isEmpty()){
 				if(Points.hasEnough(p, plugin.getConfig().getDouble("Skeleton.upgrade-Level3"))){
 					Points.takePoints(p, plugin.getConfig().getDouble("Skeleton.upgrade-Level3"));
 					skeleton.setSkeletonType(SkeletonType.WITHER);
