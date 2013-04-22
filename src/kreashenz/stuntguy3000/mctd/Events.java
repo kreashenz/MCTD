@@ -26,8 +26,6 @@ import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 public class Events implements Listener {
 
@@ -42,7 +40,7 @@ public class Events implements Listener {
 		pConfig = YamlConfiguration.loadConfiguration(config);
 		pConfig.set("Kills", "0");
 		pConfig.set("Deaths", "0");
-		pConfig.set("Points.points", plugin.getConfig().getDouble("Points-To-Start-With"));
+		pConfig.set("Points", plugin.getConfig().getInt("Points-To-Start-With"));
 		try {
 			pConfig.save(config);
 		} catch (Exception ex){ex.printStackTrace();}
@@ -119,10 +117,18 @@ public class Events implements Listener {
 		}
 		File file = new File("plugins/MinecraftTD/players/" + p.getName() + ".yml");
 		YamlConfiguration b = YamlConfiguration.loadConfiguration(file);
+		Player k = p.getKiller();
+		File afile = new File("plugins/MinecraftTD/players/" + k.getName() + ".yml");
+		YamlConfiguration c = YamlConfiguration.loadConfiguration(afile);
 		b.set("Deaths", b.getInt("Deaths") +1);
+		c.set("Kills", c.getInt("Kills") +1);
+		try {
+			b.save(file);
+			c.save(afile);
+		} catch(Exception ex){ex.printStackTrace();}
 	}
 
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = false)
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onTeamMemeberTriesToHurtAnotherTeamMember(EntityDamageByEntityEvent e) {
 		Entity entityDamager = e.getDamager();
 		Entity entityDamaged = e.getEntity();
@@ -146,7 +152,6 @@ public class Events implements Listener {
 				if(plugin.teams.playerIsOnBlue(p)){
 					e.setCancelled(true);
 					Skeleton b = p.getWorld().spawn(p.getLocation(), Skeleton.class);
-					b.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 999999999, 100));
 					b.setCustomName("§0[§1BLUE§0]");
 					b.setCustomNameVisible(true);
 					plugin.freezeTask.addMob(b, b.getLocation());
@@ -154,7 +159,6 @@ public class Events implements Listener {
 				if(plugin.teams.playerIsOnRed(p)){
 					e.setCancelled(true);
 					Skeleton b = p.getWorld().spawn(p.getLocation(), Skeleton.class);
-					b.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 999999999, 100));
 					b.setCustomName("§0[§4RED§0]");
 					b.setCustomNameVisible(true);
 					plugin.freezeTask.addMob(b, b.getLocation());
@@ -165,15 +169,9 @@ public class Events implements Listener {
 
 	@EventHandler
 	public void playerPlaceMobEgg(CreatureSpawnEvent e){
-		if(plugin.teams.playerIsOnBlue((Player)e.getEntity()) || plugin.teams.playerIsOnRed((Player)e.getEntity())){ // idk?
-			if(e.getSpawnReason() == SpawnReason.SPAWNER_EGG){
-				e.setCancelled(true);
-			}
-			if(e.getSpawnReason() == SpawnReason.EGG){
-				e.setCancelled(true);
-			}
-		}
-		if(!(e.getSpawnReason() == SpawnReason.SPAWNER_EGG || e.getSpawnReason() == SpawnReason.EGG)){
+		if(e.getSpawnReason() == SpawnReason.SPAWNER_EGG || e.getSpawnReason() == SpawnReason.EGG){
+			e.setCancelled(true);
+		} else {
 			e.setCancelled(false);
 		}
 	}
@@ -184,11 +182,6 @@ public class Events implements Listener {
 		if(plugin.teams.playerIsOnBlue(p)){
 			e.setMessage(ChatColor.translateAlternateColorCodes('&', e.getMessage()));
 			p.setDisplayName("§9" + p.getName() + "§r");
-		}
-		if(plugin.teams.playerIsOnBlue(p) && e.getMessage().startsWith("!")){
-			if(plugin.teams.playerIsOnBlue(p)){
-				p.sendMessage("§9this should be team chat.");
-			}
 		}
 		if(plugin.teams.playerIsOnRed(p)){
 			e.setMessage(ChatColor.translateAlternateColorCodes('&', e.getMessage()));

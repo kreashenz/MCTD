@@ -28,7 +28,7 @@ public class TDCommands implements CommandExecutor {
 				}
 				if(args.length == 1){
 					if(args[0].equalsIgnoreCase("points")){
-						sender.sendMessage("§aYou have §9" + Points.getPoints(p) + " §apoints!");
+						p.sendMessage("§aYou have §9" + Points.getPoints(p) + " §apoints!");
 					}
 					if(args[0].equalsIgnoreCase("setspawn")){
 						p.sendMessage("§cUsage : §f/td setspawn <blue | red>");
@@ -42,29 +42,20 @@ public class TDCommands implements CommandExecutor {
 					}
 				}
 				if(args.length == 2){
-					if(args[0].equalsIgnoreCase("setspawn")){
-						if(args[1].equalsIgnoreCase("blue")){
-							double x = p.getLocation().getX();
-							double y = p.getLocation().getY();
-							double z = p.getLocation().getZ();
-							double yaw = p.getLocation().getYaw();
-							double pitch = p.getLocation().getPitch();
-							World world = p.getWorld();
-							config.set("Blue.spawn.x", Double.valueOf(x));
-							config.set("Blue.spawn.y", Double.valueOf(y));
-							config.set("Blue.spawn.z", Double.valueOf(z));
-							config.set("Blue.spawn.yaw", Double.valueOf(yaw));
-							config.set("Blue.spawn.pitch", Double.valueOf(pitch));
-							config.set("Blue.spawn.world", world.getName());
-							p.sendMessage("§aSpawn location for §bBlue §ateam is set!");
-							plugin.saveConfig();
-						}
-						if(args[1].equalsIgnoreCase("red")){
-							plugin.saveConfig();
-						}
-						if(!(args[1].equalsIgnoreCase("red") || args[1].equalsIgnoreCase("blue"))){
-							p.sendMessage("§cYou can only use §4Red §cor §bBlue §cteams!");
-						}
+					if(args[0].equalsIgnoreCase("points")){
+						Player t = Bukkit.getPlayer(args[1]);
+						if(t != null && t.isOnline()){
+							p.sendMessage("§9" + t.getName() + "§a has §9" + Points.getPoints(t) + " §apoints!");
+						} else p.sendMessage("§cThat player isn't online.");
+					}
+					if(args[0].equalsIgnoreCase("team")){
+						String[] leave = { "leave", "quit" };
+						for(String quit : leave)
+							if(args[1].equalsIgnoreCase(quit)){
+								if(plugin.teams.playerIsOnBlue(p) || plugin.teams.playerIsOnRed(p)){
+									plugin.teams.setIsNotPlaying(p);
+								} else p.sendMessage("§cYou must be on a team to leave it!");
+							}
 					}
 					if(args[0].equalsIgnoreCase("join")){
 						if(args[1].equalsIgnoreCase("blue")){

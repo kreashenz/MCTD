@@ -27,6 +27,14 @@ public class TeamManager {
 	public boolean playerIsOnBlue(Player p){
 		return isOnBlue.contains(p.getName());
 	}
+	public void setIsNotPlaying(Player p){
+		if(isOnRed.contains(p.getName())){
+			isOnRed.remove(p.getName());
+		}
+		if(isOnBlue.contains(p.getName())){
+			isOnBlue.remove(p.getName());
+		}
+	}
 	public boolean playerIsNotPlaying(Player p){
 		if (playerIsOnRed(p) || playerIsOnBlue(p))
 		{

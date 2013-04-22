@@ -64,22 +64,30 @@ public class SBManager {
 	}
 
 	public void setKills(Player p, int Kills){
-		plugin.getConfig().set(p.getName() + ".kills", Kills);
-		plugin.saveConfig();
+		File file = new File("plugins/MinecraftTD/players/" + p.getName() + ".yml");
+		YamlConfiguration a = YamlConfiguration.loadConfiguration(file);
+		a.set("Kills", Kills);
+		try {
+			a.save(file);
+		} catch (Exception e){e.printStackTrace();}
 	}
 
 	public void setDeaths(Player p, int Deaths){
 		File file = new File("plugins/MinecraftTD/players/" + p.getName() + ".yml");
 		YamlConfiguration a = YamlConfiguration.loadConfiguration(file);
-		a.set(p.getName() + ".deaths", Deaths);
+		a.set("Deaths", Deaths);
 		try {
 			a.save(file);
 		} catch (Exception e){e.printStackTrace();}
 	}
 
 	public void setTokens(Player p, int Tokens){
-		plugin.getConfig().set(p.getName() + ".points", Tokens);
-		plugin.saveConfig();
+		File file = new File("plugins/MinecraftTD/players/" + p.getName() + ".yml");
+		YamlConfiguration a = YamlConfiguration.loadConfiguration(file);
+		a.set("Points.points", Tokens);
+		try {
+			a.save(file);
+		} catch (Exception e){e.printStackTrace();}
 	}
 
 	public void setWave(final Player p, int Waves){
@@ -110,5 +118,6 @@ public class SBManager {
 		if(plugin.teams.playerIsOnBlue(p)){
 			objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
 		}
+		p.setScoreboard(board);
 	}
 }
