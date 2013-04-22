@@ -1,0 +1,9 @@
+main: kreashenz.stuntguy3000.mctd.MCTD
+version: 0.50-BETA
+name: MinecraftTD
+description: Minecraft Tower Defense
+
+commands:
+  td:
+    description: Basic TowerDefence commands.
+    aliases: [towerdefence, towerdefense]
