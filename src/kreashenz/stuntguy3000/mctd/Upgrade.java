@@ -26,7 +26,11 @@ public class Upgrade implements Listener {
 	public static HashMap<Entity, Location> d = new HashMap<Entity, Location>(); // level 4
 	public static HashMap<Entity, Location> e = new HashMap<Entity, Location>(); // level 5
 
+<<<<<<< HEAD
+	@EventHandler
+=======
 	@EventHandler /*lets not register it at the moment */
+>>>>>>> b953a5352d6cc9605b5a8315d9cce3ccad0deb91
 	public void onPlayerUpgradeTower(PlayerInteractEntityEvent e){
 		Player p = e.getPlayer();
 		if(e.getRightClicked() instanceof Skeleton){
@@ -42,9 +46,14 @@ public class Upgrade implements Listener {
 					ItemStack bow = new ItemStack(Material.BOW, 1);
 					bow.addEnchantment(Enchantment.ARROW_DAMAGE, 2);
 					skele.setItemInHand(bow);
+					skeleton.setHealth(skeleton.getMaxHealth() * 2);
 				} else p.sendMessage("§cYou do not have enough money to upgrade that tower.");
 			}
+<<<<<<< HEAD
+			if(c.containsKey(e.getRightClicked())){
+=======
 			if(!c.isEmpty()){
+>>>>>>> b953a5352d6cc9605b5a8315d9cce3ccad0deb91
 				if(Points.hasEnough(p, plugin.getConfig().getDouble("Skeleton.upgrade-Level2"))){
 					Points.takePoints(p, plugin.getConfig().getDouble("Skeleton.upgrade-Level2"));
 					skele.setHelmet(new ItemStack(Material.CHAINMAIL_HELMET, 1));
@@ -57,7 +66,11 @@ public class Upgrade implements Listener {
 					skele.setItemInHand(bow);
 				} else p.sendMessage("§cYou do not have enough money to upgrade that tower.");
 			}
+<<<<<<< HEAD
+			if(d.containsKey(e.getRightClicked())){
+=======
 			if(!d.isEmpty()){
+>>>>>>> b953a5352d6cc9605b5a8315d9cce3ccad0deb91
 				if(Points.hasEnough(p, plugin.getConfig().getDouble("Skeleton.upgrade-Level3"))){
 					Points.takePoints(p, plugin.getConfig().getDouble("Skeleton.upgrade-Level3"));
 					skeleton.setSkeletonType(SkeletonType.WITHER);

@@ -15,13 +15,15 @@ public class Enums {
 		CRAZY(50),
 		CRAZYINSANE(60),
 		INSANE(70),
-		UNDEFEATABLEINSANE(80),
+		INSANEUNDEFEATABLE(80),
 		UNDEFEATABLE(100);
 
 		private int multiplier;
-		private towerHealth(int multiplier){
+
+		private towerHealth(int multiplier) {
 			this.multiplier = multiplier;
 		}
+
 		public int getMax(int playerCount) {
 			return (playerCount + 1) * 20 * multiplier;
 		}
@@ -31,5 +33,4 @@ public class Enums {
 		}
 
 	}
-
 }

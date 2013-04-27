@@ -5,7 +5,6 @@ import java.io.File;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
@@ -32,9 +31,6 @@ public class SBManager {
 		Score deaths = objective.getScore(Bukkit.getOfflinePlayer("§aDeaths§7:§c"));
 		deaths.setScore(getDeaths(p));
 
-		Score wave = objective.getScore(Bukkit.getOfflinePlayer("§aWave§7:§c"));
-		wave.setScore(getWave(p));
-
 		Score tokens = objective.getScore(Bukkit.getOfflinePlayer("§aPoints§7:§c"));
 		tokens.setScore(getTokens(p));
 
@@ -53,14 +49,12 @@ public class SBManager {
 		return aa.getInt("Deaths");
 	}
 
-	public int getWave(Player p){
-		return plugin.getConfig().getInt(p.getName() + ".wave");
-	}
-
 	public int getTokens(Player p){
 		File file = new File("plugins/MinecraftTD/players" + p.getName() + ".yml");
 		YamlConfiguration aa = YamlConfiguration.loadConfiguration(file);
 		return aa.getInt("Points");
+<<<<<<< HEAD
+=======
 	}
 
 	public void setKills(Player p, int Kills){
@@ -99,10 +93,21 @@ public class SBManager {
 		}.runTaskLater(plugin, plugin.getConfig().getInt("Time-Between-Each-Round")*20);
 		plugin.getConfig().set(p.getName() + ".wave", Waves +1);
 		plugin.saveConfig();
+>>>>>>> b953a5352d6cc9605b5a8315d9cce3ccad0deb91
 	}
 
 	/*
 	public void setRedTeam(Player p){
+<<<<<<< HEAD
+		plugin.teams.isOnRed.add(p.getName());
+	}
+
+	public void setBlueTeam(Player p){
+		plugin.teams.isOnBlue.add(p.getName());
+	}
+
+}
+=======
 		ScoreboardManager manager = Bukkit.getScoreboardManager();
 		Scoreboard board = manager.getNewScoreboard();
 		Objective objective = board.registerNewObjective("§0[§4Red§0]§7", "§0[§4Red§0]§7");
@@ -123,3 +128,4 @@ public class SBManager {
 	}
 	 */
 }
+>>>>>>> b953a5352d6cc9605b5a8315d9cce3ccad0deb91

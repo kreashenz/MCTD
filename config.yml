@@ -1,1 +1,6 @@
 Points-To-Start-With: 1000
+Towers:
+  skeleton:
+    price: 600
+  zombie:
+    price: 300

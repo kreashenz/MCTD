@@ -13,15 +13,26 @@ import org.bukkit.block.Dispenser;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.craftbukkit.v1_5_R2.entity.CraftPlayer;
+<<<<<<< HEAD
+import org.bukkit.entity.*;
+=======
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
+>>>>>>> b953a5352d6cc9605b5a8315d9cce3ccad0deb91
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockDispenseEvent;
+<<<<<<< HEAD
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+=======
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+>>>>>>> b953a5352d6cc9605b5a8315d9cce3ccad0deb91
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -32,10 +43,12 @@ import org.bukkit.inventory.ItemStack;
 
 public class Events implements Listener {
 
-	MCTD plugin;
-	Events(MCTD plugin){this.plugin=plugin;}
-	File config;
-	FileConfiguration pConfig;
+	public MCTD plugin;
+	public Events(MCTD plugin){this.plugin=plugin;}
+	public File config;
+	public FileConfiguration pConfig;
+	public String blueName = "§0[§1Blue§0]";
+	public String redName = "§0[§4Red§0]";
 
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e){
@@ -66,18 +79,18 @@ public class Events implements Listener {
 		((CraftPlayer) p).getHandle().playerConnection.a(packet);
 		if(plugin.teams.playerIsOnBlue(p)){
 			if(a.getString("Blue.spawn") == null){
-				p.sendMessage("§cThere is no spawn location for the §bBlue§c team.");
+				plugin.error(p, "There is no spawn location for the §bBlue§c team.");
 			} else {
 				double x = a.getDouble("Blue.spawn.x");
 				double y = a.getDouble("Blue.spawn.y");
 				double z = a.getDouble("Blue.spawn.z");
-				double yaw = a.getDouble("Blue.spawn.yaw"); // KANE if you see this, im turning my
-				double pitch = a.getDouble("Blue.spawn.pitch"); // server into a build server.
-				String world = a.getString("Blue.spawn.world"); // node24.minecrafted.net:25590
+				double yaw = a.getDouble("Blue.spawn.yaw");
+				double pitch = a.getDouble("Blue.spawn.pitch");
+				String world = a.getString("Blue.spawn.world");
 				Location loc = p.getLocation();
 
 				if(Bukkit.getWorld(world) == null){
-					p.sendMessage("§cWorld doesn't exist for the §bblue §cteam spawn.");
+					plugin.error(p, "World doesn't exist for the §bblue §cteam spawn.");
 				} else {
 					loc.setX(x);
 					loc.setY(y);
@@ -91,7 +104,7 @@ public class Events implements Listener {
 		}
 		if(plugin.teams.playerIsOnRed(p)){
 			if(a.getString("Red.spawn") == null){
-				p.sendMessage("§cThere is no spawn location for the §4Red §cteam.");
+				plugin.error(p, "There is no spawn location for the §4Red §cteam.");
 			} else {
 				double x = a.getDouble("Red.spawn.x");
 				double y = a.getDouble("Red.spawn.y");
@@ -102,7 +115,7 @@ public class Events implements Listener {
 				Location loc = p.getLocation();
 
 				if(Bukkit.getWorld(world) == null){
-					p.sendMessage("§cWorld doesn't exist for the §4Red §cteam spawn.");
+					plugin.error(p, "§cWorld doesn't exist for the §4Red §cteam spawn.");
 				} else {
 					loc.setX(x);
 					loc.setY(y);
@@ -138,10 +151,15 @@ public class Events implements Listener {
 		if (entityDamager instanceof Player && entityDamaged instanceof Player){
 			Player Damager = (Player) entityDamager;
 			Player damaged = (Player) entityDamaged;
-			if(plugin.teams.playerIsOnBlue(Damager) && plugin.teams.playerIsOnBlue(damaged)){
+			if(plugin.teams.playerIsOnBlue(Damager) && plugin.teams.playerIsOnBlue(damaged)
+					|| plugin.teams.playerIsOnRed(Damager) && plugin.teams.playerIsOnRed(damaged)){
 				e.setCancelled(true);
 			}
-			if(plugin.teams.playerIsOnRed(Damager) && plugin.teams.playerIsOnRed(damaged)){
+		}
+		if(entityDamager instanceof Skeleton && entityDamaged instanceof Skeleton
+				|| entityDamager instanceof Zombie && entityDamaged instanceof Zombie){
+			if(plugin.teams.entityIsOnBlue(entityDamager) && plugin.teams.entityIsOnBlue(entityDamaged)
+					|| plugin.teams.entityIsOnRed(entityDamager) && plugin.teams.entityIsOnRed(entityDamaged)){
 				e.setCancelled(true);
 			}
 		}
@@ -150,20 +168,46 @@ public class Events implements Listener {
 	@EventHandler
 	public void onTeamPlaceMob(PlayerInteractEvent e){
 		Player p = e.getPlayer();
-		if(e.getAction() == Action.RIGHT_CLICK_BLOCK && p.getItemInHand() != null){
-			if (p.getItemInHand().getType() == Material.MONSTER_EGG){
-				if(plugin.teams.playerIsOnBlue(p)){
+		ItemStack IinH = p.getItemInHand();
+		if(e.getAction() == Action.RIGHT_CLICK_BLOCK && IinH != null){
+			if (IinH.getType() == Material.MONSTER_EGG){
+				Location l = p.getLocation();
+				Location loc = new Location(l.getWorld(), l.getBlockX(), l.getBlockY(), l.getBlockZ());
+				if(IinH.getData().getData() == 51){
 					e.setCancelled(true);
+<<<<<<< HEAD
+					Skeleton b = p.getWorld().spawn(loc, Skeleton.class);
+					if(plugin.teams.playerIsOnBlue(p)){
+						b.setCustomName(blueName);
+						plugin.teams.entityIsOnBlue.add(b);
+					} else {
+						b.setCustomName(redName);
+						plugin.teams.entityIsOnRed.add(b);
+					}
+					b.setMaxHealth(b.getMaxHealth()*4);
+=======
 					Location loc = p.getLocation();
 //					Location l = new Location(l.getWorld(), l.getX(), l.getWorld().getMaxHeight(), l.getZ());
 					Skeleton b = p.getWorld().spawn(loc, Skeleton.class);
 					b.setCustomName("§0[§1BLUE§0]");
+>>>>>>> b953a5352d6cc9605b5a8315d9cce3ccad0deb91
 					b.setCustomNameVisible(true);
 					b.getEquipment().setItemInHand(new ItemStack(Material.BOW));
 					plugin.freezeTask.addMob(b, b.getLocation());
 				}
-				if(plugin.teams.playerIsOnRed(p)){
+				if(IinH.getData().getData() == 54){
 					e.setCancelled(true);
+<<<<<<< HEAD
+					Zombie b = p.getWorld().spawn(loc, Zombie.class);
+					if(plugin.teams.playerIsOnBlue(p)){
+						b.setCustomName(blueName);
+					} else {
+						b.setCustomName(redName);
+					}
+					b.setMaxHealth(b.getMaxHealth()*5);
+					b.setCustomNameVisible(true);
+					b.getEquipment().setItemInHand(new ItemStack(Material.WOOD_SWORD));
+=======
 					Location l = p.getLocation();
 					//Location loc = new Location(l.getWorld(), l.getBlockX(), l.getWorld().getMaxHeight(), l.getBlockZ());
 					//                    Location location = new Location(user.getWorld(), topX, user.getWorld().getMaxHeight(), topZ);
@@ -171,6 +215,7 @@ public class Events implements Listener {
 					b.setCustomName("§0[§4RED§0]");
 					b.setCustomNameVisible(true);
 					b.getEquipment().setItemInHand(new ItemStack(Material.BOW));
+>>>>>>> b953a5352d6cc9605b5a8315d9cce3ccad0deb91
 					plugin.freezeTask.addMob(b, b.getLocation());
 				}
 			}
@@ -178,6 +223,23 @@ public class Events implements Listener {
 	}
 
 	@EventHandler
+<<<<<<< HEAD
+	public void onEntityDamage(EntityDamageEvent e){
+		if(e.getEntity() instanceof Silverfish){
+			for(DamageCause damage : DamageCause.values())
+				if(e.getEntity().getLastDamageCause().getCause() == damage){
+					e.setCancelled(true);
+				} else {
+					e.setCancelled(true);
+				}
+		} else {
+			e.setCancelled(false);
+		}
+	}
+
+	@EventHandler
+=======
+>>>>>>> b953a5352d6cc9605b5a8315d9cce3ccad0deb91
 	public void playerChatAsTeam(AsyncPlayerChatEvent e){
 		Player p = e.getPlayer();
 		if(plugin.teams.playerIsOnBlue(p)){
@@ -215,4 +277,21 @@ public class Events implements Listener {
 		}
 	}
 
+	@EventHandler
+	public void onCannonPlace(BlockPlaceEvent e){
+		Block block = e.getBlock();
+		if(block.getType() == Material.DISPENSER){
+			Bat mob = block.getWorld().spawn(block.getLocation().add(0,0,0), Bat.class);
+			if(plugin.teams.playerIsOnBlue(e.getPlayer())){
+				mob.setCustomName(blueName);
+			} 
+			if(plugin.teams.playerIsOnRed(e.getPlayer())){
+				mob.setCustomName(redName);
+			} else {
+				mob.setCustomNameVisible(false);
+			}
+			mob.setCustomNameVisible(true);
+			plugin.freezeTask.addMob(mob, mob.getLocation());
+		}
+	}
 }
