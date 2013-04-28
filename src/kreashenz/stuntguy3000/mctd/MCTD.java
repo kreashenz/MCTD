@@ -24,11 +24,8 @@ public class MCTD extends JavaPlugin {
 
 	public void onEnable(){
 		getServer().getScheduler().runTaskTimer(this, freezeTask, 0L, 1L);
-<<<<<<< HEAD
 		getLogger().info("Minecraft Tower Defense v"+ getDescription().getVersion() + " is now loaded!");
-=======
 		getLogger().info("Minecraft Tower Defense is now loaded!");
->>>>>>> b953a5352d6cc9605b5a8315d9cce3ccad0deb91
 		registerListeners();
 		getCommand("td").setExecutor(new TDCommands(this));
 		setupTimer();
@@ -44,7 +41,6 @@ public class MCTD extends JavaPlugin {
 		pm.registerEvents(new Upgrade(this), this);
 	}
 
-<<<<<<< HEAD
 	public void sendHelp(Player p){ // 10 lines per help page. REMEMBER
 		if(!p.hasPermission("td.*") || p.isOp()){ // 53 letters per line.
 			tell(p, "§6§l================== §9§oMCTD Help§r§6§l ===================");// 1
@@ -65,24 +61,8 @@ public class MCTD extends JavaPlugin {
 			tell(p, "§9/td buy <tower> §1: §6Buy the specified tower"); // 7
 			tell(p, "§9/td list §1: §6List the available towers"); // 8
 			tell(p, "§9/td points <add | take | set | player> §1: §6Add, set, take or check points");
-			tell(p, "§6§l================== §9§oMCTD Help§r§6§l ===================");// 1
-=======
-	public void sendHelp(Player p){
-		if(!p.hasPermission("td.*")){
-			// send them the NON op commands.
-		} else {
-			p.sendMessage("§2+----------------------------------------------------");
-			p.sendMessage("§2|| §a/td setspawn <blue | red>");
-			p.sendMessage("§2|| §a/td join <blue | red>");
-			p.sendMessage("§2|| §a/td delete <arena name>");
-			p.sendMessage("§2|| §a/td start <arena name>");
-			p.sendMessage("§2|| §a/td setstart <arena name>");
-			p.sendMessage("§2|| §a/td setend <arena name>");
-			p.sendMessage("§2|| §a/td reload");
-			p.sendMessage("§2+----------------------------------------------------");
-
->>>>>>> b953a5352d6cc9605b5a8315d9cce3ccad0deb91
-		}
+			tell(p, "§6§l================== §9§oMCTD Help§r§6§l ===================");
+		}// 1
 	}
 
 
@@ -94,7 +74,6 @@ public class MCTD extends JavaPlugin {
 					sb.setScoreboard(p);
 				}
 			}
-<<<<<<< HEAD
 		}, 0L, 10L);
 	}
 
@@ -106,10 +85,7 @@ public class MCTD extends JavaPlugin {
 					for(ItemStack i : p.getInventory().getContents())
 						i.setDurability((short)999999999);
 			}
-		}, 0L, 1L);
-=======
 		}, 0L, 20L);
->>>>>>> b953a5352d6cc9605b5a8315d9cce3ccad0deb91
 	}
 
 	public void sendAll(String message){

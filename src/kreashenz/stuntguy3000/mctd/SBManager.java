@@ -53,8 +53,6 @@ public class SBManager {
 		File file = new File("plugins/MinecraftTD/players" + p.getName() + ".yml");
 		YamlConfiguration aa = YamlConfiguration.loadConfiguration(file);
 		return aa.getInt("Points");
-<<<<<<< HEAD
-=======
 	}
 
 	public void setKills(Player p, int Kills){
@@ -82,18 +80,6 @@ public class SBManager {
 		try {
 			a.save(file);
 		} catch (Exception e){e.printStackTrace();}
-	}
-
-	public void setWave(final Player p, int Waves){
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				setWave(p, plugin.getConfig().getInt(p.getName() + ".wave") +1);
-			}
-		}.runTaskLater(plugin, plugin.getConfig().getInt("Time-Between-Each-Round")*20);
-		plugin.getConfig().set(p.getName() + ".wave", Waves +1);
-		plugin.saveConfig();
->>>>>>> b953a5352d6cc9605b5a8315d9cce3ccad0deb91
 	}
 
 	/*
@@ -128,4 +114,3 @@ public class SBManager {
 	}
 	 */
 }
->>>>>>> b953a5352d6cc9605b5a8315d9cce3ccad0deb91

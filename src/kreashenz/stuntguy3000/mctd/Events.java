@@ -13,26 +13,16 @@ import org.bukkit.block.Dispenser;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.craftbukkit.v1_5_R2.entity.CraftPlayer;
-<<<<<<< HEAD
 import org.bukkit.entity.*;
-=======
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Skeleton;
->>>>>>> b953a5352d6cc9605b5a8315d9cce3ccad0deb91
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockDispenseEvent;
-<<<<<<< HEAD
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-=======
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
->>>>>>> b953a5352d6cc9605b5a8315d9cce3ccad0deb91
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -40,6 +30,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.kitteh.tag.PlayerReceiveNameTagEvent;
 
 public class Events implements Listener {
 
@@ -50,6 +41,20 @@ public class Events implements Listener {
 	public String blueName = "§0[§1Blue§0]";
 	public String redName = "§0[§4Red§0]";
 
+	@EventHandler(priority = EventPriority.HIGH)
+	public void onPlayerNameTagChange(PlayerReceiveNameTagEvent e){
+		Player p = e.getPlayer();
+		if(plugin.teams.playerIsOnBlue(p)){
+			e.setTag("§9" + p.getName());
+		}
+		if(plugin.teams.playerIsOnRed(p)){
+			e.setTag("§4" + p.getName());
+		}
+		if(plugin.teams.playerIsNotPlaying(p)){
+			e.setTag("§f" + p.getName());
+		}
+	}
+	
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e){
 		config = new File("plugins/MinecraftTD/players/" + e.getPlayer().getName().toLowerCase() + ".yml");
@@ -175,7 +180,6 @@ public class Events implements Listener {
 				Location loc = new Location(l.getWorld(), l.getBlockX(), l.getBlockY(), l.getBlockZ());
 				if(IinH.getData().getData() == 51){
 					e.setCancelled(true);
-<<<<<<< HEAD
 					Skeleton b = p.getWorld().spawn(loc, Skeleton.class);
 					if(plugin.teams.playerIsOnBlue(p)){
 						b.setCustomName(blueName);
@@ -185,19 +189,14 @@ public class Events implements Listener {
 						plugin.teams.entityIsOnRed.add(b);
 					}
 					b.setMaxHealth(b.getMaxHealth()*4);
-=======
-					Location loc = p.getLocation();
 //					Location l = new Location(l.getWorld(), l.getX(), l.getWorld().getMaxHeight(), l.getZ());
-					Skeleton b = p.getWorld().spawn(loc, Skeleton.class);
 					b.setCustomName("§0[§1BLUE§0]");
->>>>>>> b953a5352d6cc9605b5a8315d9cce3ccad0deb91
 					b.setCustomNameVisible(true);
 					b.getEquipment().setItemInHand(new ItemStack(Material.BOW));
 					plugin.freezeTask.addMob(b, b.getLocation());
 				}
 				if(IinH.getData().getData() == 54){
 					e.setCancelled(true);
-<<<<<<< HEAD
 					Zombie b = p.getWorld().spawn(loc, Zombie.class);
 					if(plugin.teams.playerIsOnBlue(p)){
 						b.setCustomName(blueName);
@@ -207,15 +206,11 @@ public class Events implements Listener {
 					b.setMaxHealth(b.getMaxHealth()*5);
 					b.setCustomNameVisible(true);
 					b.getEquipment().setItemInHand(new ItemStack(Material.WOOD_SWORD));
-=======
-					Location l = p.getLocation();
 					//Location loc = new Location(l.getWorld(), l.getBlockX(), l.getWorld().getMaxHeight(), l.getBlockZ());
 					//                    Location location = new Location(user.getWorld(), topX, user.getWorld().getMaxHeight(), topZ);
-					Skeleton b = p.getWorld().spawn(l, Skeleton.class);
 					b.setCustomName("§0[§4RED§0]");
 					b.setCustomNameVisible(true);
 					b.getEquipment().setItemInHand(new ItemStack(Material.BOW));
->>>>>>> b953a5352d6cc9605b5a8315d9cce3ccad0deb91
 					plugin.freezeTask.addMob(b, b.getLocation());
 				}
 			}
@@ -223,7 +218,6 @@ public class Events implements Listener {
 	}
 
 	@EventHandler
-<<<<<<< HEAD
 	public void onEntityDamage(EntityDamageEvent e){
 		if(e.getEntity() instanceof Silverfish){
 			for(DamageCause damage : DamageCause.values())
@@ -238,8 +232,6 @@ public class Events implements Listener {
 	}
 
 	@EventHandler
-=======
->>>>>>> b953a5352d6cc9605b5a8315d9cce3ccad0deb91
 	public void playerChatAsTeam(AsyncPlayerChatEvent e){
 		Player p = e.getPlayer();
 		if(plugin.teams.playerIsOnBlue(p)){

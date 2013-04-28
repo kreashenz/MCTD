@@ -55,7 +55,6 @@ public class TDCommands implements CommandExecutor {
 						if(t != null && t.isOnline()){
 							p.sendMessage("§9" + t.getName() + "§a has §9" + Points.getPoints(t) + " §apoints!");
 						} else p.sendMessage("§cThat player isn't online.");
-<<<<<<< HEAD
 					}
 					if(args[0].equalsIgnoreCase("team")){
 						String[] leave = { "leave", "quit" };
@@ -101,6 +100,7 @@ public class TDCommands implements CommandExecutor {
 						for(String red : plugin.redName)
 							if(args[1].equalsIgnoreCase(red)){
 								if(a.playerIsNotPlaying(p) && !a.playerIsOnBlue(p)){
+									
 									a.isOnRed.add(p.getName());
 									p.sendMessage("§aJoined the §4red §ateam!");
 									p.getInventory().setHelmet(new ItemStack(Material.IRON_HELMET));
@@ -130,7 +130,6 @@ public class TDCommands implements CommandExecutor {
 									} else p.sendMessage("§cThere's no spawn point for §4Red §cteam!!!");
 								} else p.sendMessage("§cYou have already chosen your team.");
 							}
-=======
 					}
 					if(args[0].equalsIgnoreCase("team")){
 						String[] leave = { "leave", "quit" };
@@ -156,7 +155,6 @@ public class TDCommands implements CommandExecutor {
 //								plugin.sb.setRedTeam(p);
 							} else p.sendMessage("§cYou have already chosen your team.");
 						}
->>>>>>> b953a5352d6cc9605b5a8315d9cce3ccad0deb91
 						if(!(args[1].equalsIgnoreCase("red") || args[1].equalsIgnoreCase("blue"))){
 							p.sendMessage("§cYou can only join the §4Red §cor §bBlue §cteams!");
 						}

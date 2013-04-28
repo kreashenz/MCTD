@@ -10,19 +10,11 @@ import org.bukkit.entity.Player;
 public class Points {
 
 	private Points() {
-<<<<<<< HEAD
 		// why do this?? i dont understand why to leave it empty.
 	}
 
 	public static void addPoints(Player p, double points) {
-		if (p == null)
-=======
-		// TODO: Do not instantiate
-	}
-
-	public static void addPoints(Player p, double points) {
 		if (isNull(p))
->>>>>>> b953a5352d6cc9605b5a8315d9cce3ccad0deb91
 			return;
 		File aa = new File("plugins/MinecraftTD/players/" + p.getName().toLowerCase() + ".yml");
 		FileConfiguration a = YamlConfiguration.loadConfiguration(aa);
@@ -35,11 +27,8 @@ public class Points {
 	}
 
 	public static void takePoints(Player p, double points) {
-<<<<<<< HEAD
 		if (p == null)
-=======
 		if (isNull(p))
->>>>>>> b953a5352d6cc9605b5a8315d9cce3ccad0deb91
 			return;
 		File aa = new File("plugins/MinecraftTD/players/" + p.getName().toLowerCase() + ".yml");
 		FileConfiguration a = YamlConfiguration.loadConfiguration(aa);
@@ -52,11 +41,8 @@ public class Points {
 	}
 
 	public static void setPoints(Player p, double points) {
-<<<<<<< HEAD
 		if (p == null)
-=======
 		if (isNull(p))
->>>>>>> b953a5352d6cc9605b5a8315d9cce3ccad0deb91
 			return;
 		File aa = new File("plugins/MinecraftTD/players/" + p.getName().toLowerCase() + ".yml");
 		FileConfiguration a = YamlConfiguration.loadConfiguration(aa);
@@ -96,11 +82,8 @@ public class Points {
 	}
 
 	public static Double getPoints(Player p) {
-<<<<<<< HEAD
 		if (p == null)
-=======
 		if (isNull(p))
->>>>>>> b953a5352d6cc9605b5a8315d9cce3ccad0deb91
 			return Double.valueOf(0.0D);
 		File aa = new File("plugins/MinecraftTD/players/" + p.getName().toLowerCase() + ".yml");
 		FileConfiguration a = YamlConfiguration.loadConfiguration(aa);
@@ -117,11 +100,8 @@ public class Points {
 	}
 
 	public static boolean hasEnough(Player p, double points) {
-<<<<<<< HEAD
 		if (p == null)
-=======
 		if (isNull(p))
->>>>>>> b953a5352d6cc9605b5a8315d9cce3ccad0deb91
 			return false;
 		return points <= getPoints(p).doubleValue();
 	}
@@ -135,31 +115,13 @@ public class Points {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-<<<<<<< HEAD
-	}
-
-	public static void resetPoints(String name) {
-		Player player = Bukkit.getPlayer(name);
-		if (player == null) {
-			// what error stuff, how are you gunna send the error message?
-=======
-	}
-
-	public static void resetPoints(String name) {
-		Player player = Bukkit.getPlayer(name);
-		if (player == null) {
-			// TODO: Error message stuff...
-			return;
-		}
-		resetPoints(player);
 	}
 
 	private static boolean isNull(Player p) {
 		if (p != null) {
 			return false;
->>>>>>> b953a5352d6cc9605b5a8315d9cce3ccad0deb91
 		}
-		resetPoints(player);
+		return true;
 	}
 
 	public static boolean isInt(String sInt) {
