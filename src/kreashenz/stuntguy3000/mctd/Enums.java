@@ -15,7 +15,7 @@ public class Enums {
 		CRAZY(50),
 		CRAZYINSANE(60),
 		INSANE(70),
-		INSANEUNDEFEATABLE(80),
+		UNDEFEATABLEINSANE(80),
 		UNDEFEATABLE(100);
 
 		private int multiplier;

@@ -51,7 +51,7 @@ public class Events implements Listener {
 			e.setTag("§4" + p.getName());
 		}
 		if(plugin.teams.playerIsNotPlaying(p)){
-			e.setTag("§f" + p.getName());
+			e.setTag("§e" + p.getName());
 		}
 	}
 	

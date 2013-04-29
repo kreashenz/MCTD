@@ -9,16 +9,14 @@ import org.bukkit.entity.Player;
 
 public class Points {
 
-	private Points() {
-		// why do this?? i dont understand why to leave it empty.
-	}
+	private Points() {}
 
 	public static void addPoints(Player p, double points) {
-		if (isNull(p))
+		if (p == null)
 			return;
 		File aa = new File("plugins/MinecraftTD/players/" + p.getName().toLowerCase() + ".yml");
 		FileConfiguration a = YamlConfiguration.loadConfiguration(aa);
-		a.set("Points.points", Double.valueOf(a.getDouble("Points.points") + points));
+		a.set("Points", Double.valueOf(a.getDouble("Points") + points));
 		try {
 			a.save(aa);
 		} catch (Exception e) {
@@ -28,11 +26,10 @@ public class Points {
 
 	public static void takePoints(Player p, double points) {
 		if (p == null)
-		if (isNull(p))
 			return;
 		File aa = new File("plugins/MinecraftTD/players/" + p.getName().toLowerCase() + ".yml");
 		FileConfiguration a = YamlConfiguration.loadConfiguration(aa);
-		a.set("Points.points", Double.valueOf(a.getDouble("Points.points") - points));
+		a.set("Points", Double.valueOf(a.getDouble("Points") - points));
 		try {
 			a.save(aa);
 		} catch (Exception e) {
@@ -42,11 +39,10 @@ public class Points {
 
 	public static void setPoints(Player p, double points) {
 		if (p == null)
-		if (isNull(p))
 			return;
 		File aa = new File("plugins/MinecraftTD/players/" + p.getName().toLowerCase() + ".yml");
 		FileConfiguration a = YamlConfiguration.loadConfiguration(aa);
-		a.set("Points.points", Double.valueOf(points));
+		a.set("Points", Double.valueOf(points));
 		try {
 			a.save(aa);
 		} catch (Exception e) {
@@ -57,7 +53,7 @@ public class Points {
 	public static void addPoints(String name, double points) {
 		Player player = Bukkit.getPlayer(name);
 		if (player == null) {
-			// TODO: Error message stuff...
+			Bukkit.getConsoleSender().sendMessage("§cThat player was not found.");
 			return;
 		}
 		addPoints(player, points);
@@ -66,7 +62,7 @@ public class Points {
 	public static void takePoints(String name, double points) {
 		Player player = Bukkit.getPlayer(name);
 		if (player == null) {
-			// TODO: Error message stuff...
+			Bukkit.getConsoleSender().sendMessage("§cThat player was not found.");
 			return;
 		}
 		takePoints(player, points);
@@ -75,7 +71,7 @@ public class Points {
 	public static void setPoints(String name, double points) {
 		Player player = Bukkit.getPlayer(name);
 		if (player == null) {
-			// TODO: Error message stuff...
+			Bukkit.getConsoleSender().sendMessage("§cThat player was not found.");
 			return;
 		}
 		setPoints(player, points);
@@ -83,7 +79,6 @@ public class Points {
 
 	public static Double getPoints(Player p) {
 		if (p == null)
-		if (isNull(p))
 			return Double.valueOf(0.0D);
 		File aa = new File("plugins/MinecraftTD/players/" + p.getName().toLowerCase() + ".yml");
 		FileConfiguration a = YamlConfiguration.loadConfiguration(aa);
@@ -93,7 +88,7 @@ public class Points {
 	public static Double getPoints(String name) {
 		Player player = Bukkit.getPlayer(name);
 		if (player == null) {
-			// TODO: Error message stuff...
+			Bukkit.getConsoleSender().sendMessage("§cThat player was not found.");
 			return Double.valueOf(0.0D);
 		}
 		return getPoints(player);
@@ -101,7 +96,6 @@ public class Points {
 
 	public static boolean hasEnough(Player p, double points) {
 		if (p == null)
-		if (isNull(p))
 			return false;
 		return points <= getPoints(p).doubleValue();
 	}
@@ -117,11 +111,13 @@ public class Points {
 		}
 	}
 
-	private static boolean isNull(Player p) {
-		if (p != null) {
-			return false;
+	public static void resetPoints(String name) {
+		Player player = Bukkit.getPlayer(name);
+		if (player == null) {
+			Bukkit.getConsoleSender().sendMessage("§cThat player was not found.");
+			return;
 		}
-		return true;
+		resetPoints(player);
 	}
 
 	public static boolean isInt(String sInt) {
