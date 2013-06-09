@@ -38,21 +38,33 @@ public class SBManager {
 	}
 
 	public int getKills(Player p){
-		File file = new File("plugins/MinecraftTD/players" + p.getName() + ".yml");
+		File file = new File("plugins/MinecraftTD/players/" + p.getName() + ".yml");
 		YamlConfiguration aa = YamlConfiguration.loadConfiguration(file);
-		return aa.getInt("Kills");
+		if(aa.get("Kills") != null){
+			return aa.getInt("Kills");
+		} else {
+			return 0;
+		}
 	}
 
 	public int getDeaths(Player p){
-		File file = new File("plugins/MinecraftTD/players" + p.getName() + ".yml");
+		File file = new File("plugins/MinecraftTD/players/" + p.getName() + ".yml");
 		YamlConfiguration aa = YamlConfiguration.loadConfiguration(file);
-		return aa.getInt("Deaths");
+		if(aa.get("Deaths") != null){
+			return aa.getInt("Deaths");
+		} else {
+			return 0;
+		}
 	}
 
 	public int getTokens(Player p){
-		File file = new File("plugins/MinecraftTD/players" + p.getName() + ".yml");
+		File file = new File("plugins/MinecraftTD/players/" + p.getName() + ".yml");
 		YamlConfiguration aa = YamlConfiguration.loadConfiguration(file);
-		return aa.getInt("Points");
+		if(aa.get("Points") != null){
+			return aa.getInt("Points");
+		} else {
+			return 0;
+		}
 	}
 
 	public void setKills(Player p, int Kills){
@@ -81,36 +93,4 @@ public class SBManager {
 			a.save(file);
 		} catch (Exception e){e.printStackTrace();}
 	}
-
-	/*
-	public void setRedTeam(Player p){
-<<<<<<< HEAD
-		plugin.teams.isOnRed.add(p.getName());
-	}
-
-	public void setBlueTeam(Player p){
-		plugin.teams.isOnBlue.add(p.getName());
-	}
-
-}
-=======
-		ScoreboardManager manager = Bukkit.getScoreboardManager();
-		Scoreboard board = manager.getNewScoreboard();
-		Objective objective = board.registerNewObjective("§0[§4Red§0]§7", "§0[§4Red§0]§7");
-		if(plugin.teams.playerIsOnRed(p)){
-			objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
-		}
-		p.setScoreboard(board);
-	}
-
-	public void setBlueTeam(Player p){
-		ScoreboardManager manager = Bukkit.getScoreboardManager();
-		Scoreboard board = manager.getNewScoreboard();
-		Objective objective = board.registerNewObjective("§0[§1Blue§0]§7", "§0[§1Blue§0]§7");
-		if(plugin.teams.playerIsOnBlue(p)){
-			objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
-		}
-		p.setScoreboard(board);
-	}
-	 */
 }

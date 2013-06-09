@@ -1,3 +1,6 @@
+# Information on the Auto Updater:
+# When Enabled, every 30 minutes the Auto updater will check for the most recent plugin version from the BukkitDev page.
+Auto-Updater: false
 Points-To-Start-With: 1000
 Towers:
   skeleton:

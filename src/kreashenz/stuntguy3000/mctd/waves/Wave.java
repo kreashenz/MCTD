@@ -51,8 +51,7 @@ public class Wave implements Iterable<EntityType> {
 
 			@Override
 			public void remove() {
-				// TODO Auto-generated method stub
-				
+				// TODO ?? I got no idea // izak.
 			}
 			
 		};

@@ -33,4 +33,31 @@ public class Enums {
 		}
 
 	}
+	public enum Colour {
+		RED,BLUE;
+		public String toString(){
+			String text;
+			switch(this){
+			case RED:
+				text = "red";
+			case BLUE:
+				text = "blue";
+			default:
+				text = "null";
+			}
+			return text;
+		}
+		public String toChatColor(){
+			String colour;
+			switch(this){
+			case RED:
+				colour = "§4";
+			case BLUE:
+				colour = "§9";
+			default:
+				colour = "§e";
+			}
+			return colour;
+		}
+	}
 }

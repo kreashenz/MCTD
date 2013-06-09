@@ -2,18 +2,24 @@ package kreashenz.stuntguy3000.mctd;
 
 import java.io.File;
 
-import net.minecraft.server.v1_5_R2.Packet205ClientCommand;
+import net.minecraft.server.v1_5_R3.Packet205ClientCommand;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.Dispenser;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.craftbukkit.v1_5_R2.entity.CraftPlayer;
-import org.bukkit.entity.*;
+import org.bukkit.craftbukkit.v1_5_R3.entity.CraftPlayer;
+import org.bukkit.entity.Bat;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Silverfish;
+import org.bukkit.entity.Skeleton;
+import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -36,26 +42,32 @@ public class Events implements Listener {
 
 	public MCTD plugin;
 	public Events(MCTD plugin){this.plugin=plugin;}
-	public File config;
-	public FileConfiguration pConfig;
+	private File config;
+	private FileConfiguration pConfig;
 	public String blueName = "§0[§1Blue§0]";
 	public String redName = "§0[§4Red§0]";
 
+	@EventHandler
+	public void banana(AsyncPlayerChatEvent e){
+		for(Player p : Bukkit.getOnlinePlayers())
+			if(e.getMessage().startsWith("@" + p.getName())){
+				p.playSound(p.getLocation(), Sound.LEVEL_UP, 1,1);
+			}
+	}
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onPlayerNameTagChange(PlayerReceiveNameTagEvent e){
-		Player p = e.getPlayer();
+		Player p = e.getNamedPlayer();
 		if(plugin.teams.playerIsOnBlue(p)){
 			e.setTag("§9" + p.getName());
 		}
 		if(plugin.teams.playerIsOnRed(p)){
 			e.setTag("§4" + p.getName());
 		}
-		if(plugin.teams.playerIsNotPlaying(p)){
-			e.setTag("§e" + p.getName());
-		}
+		int bountyAmount = plugin.getConfig().getInt("");
+		p.sendMessage(bountyAmount + " you have");
 	}
-	
-	@EventHandler
+
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onPlayerJoin(PlayerJoinEvent e){
 		config = new File("plugins/MinecraftTD/players/" + e.getPlayer().getName().toLowerCase() + ".yml");
 		pConfig = YamlConfiguration.loadConfiguration(config);
@@ -65,8 +77,6 @@ public class Events implements Listener {
 		try {
 			pConfig.save(config);
 		} catch (Exception ex){ex.printStackTrace();}
-
-		plugin.sb.setScoreboard(e.getPlayer());
 		if(plugin.teams.isOnBlue.contains(e.getPlayer().getName())){
 			plugin.teams.isOnBlue.remove(e.getPlayer().getName());
 		}
@@ -136,6 +146,9 @@ public class Events implements Listener {
 			Location loc = p.getWorld().getSpawnLocation();
 			p.teleport(loc);
 		}
+		/*
+		 * TODO: fix NPE here, when there is no killer found, it sends. Try fix this.
+		 */
 		File file = new File("plugins/MinecraftTD/players/" + p.getName() + ".yml");
 		YamlConfiguration b = YamlConfiguration.loadConfiguration(file);
 		Player k = p.getKiller();
@@ -189,7 +202,7 @@ public class Events implements Listener {
 						plugin.teams.entityIsOnRed.add(b);
 					}
 					b.setMaxHealth(b.getMaxHealth()*4);
-//					Location l = new Location(l.getWorld(), l.getX(), l.getWorld().getMaxHeight(), l.getZ());
+					//Location l = new Location(l.getWorld(), l.getX(), l.getWorld().getMaxHeight(), l.getZ());
 					b.setCustomName("§0[§1BLUE§0]");
 					b.setCustomNameVisible(true);
 					b.getEquipment().setItemInHand(new ItemStack(Material.BOW));
@@ -206,8 +219,7 @@ public class Events implements Listener {
 					b.setMaxHealth(b.getMaxHealth()*5);
 					b.setCustomNameVisible(true);
 					b.getEquipment().setItemInHand(new ItemStack(Material.WOOD_SWORD));
-					//Location loc = new Location(l.getWorld(), l.getBlockX(), l.getWorld().getMaxHeight(), l.getBlockZ());
-					//                    Location location = new Location(user.getWorld(), topX, user.getWorld().getMaxHeight(), topZ);
+					//Location loc = new Location(l.getWorld(), l.getX(), l.getWorld().getMaxHeight(), l.getZ());
 					b.setCustomName("§0[§4RED§0]");
 					b.setCustomNameVisible(true);
 					b.getEquipment().setItemInHand(new ItemStack(Material.BOW));

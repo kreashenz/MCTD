@@ -7,7 +7,6 @@ import org.bukkit.event.entity.EntityDeathEvent;
 
 public class WaveEventListener implements Listener {
 	
-	@SuppressWarnings("unused")
 	private Wave wave;
 	
 	public WaveEventListener(Wave wave) {

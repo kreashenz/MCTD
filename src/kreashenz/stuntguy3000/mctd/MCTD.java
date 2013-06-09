@@ -2,22 +2,26 @@ package kreashenz.stuntguy3000.mctd;
 
 import java.io.File;
 
+import kreashenz.stuntguy3000.mctd.teams.TeamManager;
+
+import org.kitteh.tag.TagAPI;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class MCTD extends JavaPlugin {
 
-	TeamManager teams = new TeamManager(this);
-	SBManager sb = new SBManager(this);
-	Enums enums = new Enums();
-	Events events = new Events(this);
-
-	FreezeTask freezeTask = new FreezeTask();
+	public TeamManager teams = new TeamManager(this);
+	public SBManager sb = new SBManager(this);
+	public Enums enums = new Enums();
+	public Events events = new Events(this);
+	public FreezeTask freezeTask = new FreezeTask();
 
 	public String[] blueName = { "blue", "b" };
 	public String[] redName = { "red", "r" };
@@ -26,47 +30,69 @@ public class MCTD extends JavaPlugin {
 		getServer().getScheduler().runTaskTimer(this, freezeTask, 0L, 1L);
 		getLogger().info("Minecraft Tower Defense v"+ getDescription().getVersion() + " is now loaded!");
 		getLogger().info("Minecraft Tower Defense is now loaded!");
+		
 		registerListeners();
+		
 		getCommand("td").setExecutor(new TDCommands(this));
+		
+		infDurability();
 		setupTimer();
-		infiniteDurability();
-		if(!(new File("plugins/MinecraftTD/config.yml")).exists()){
+		
+		if(!TagAPI(getServer().getPluginManager())){
+			getLogger().severe("Disabling Minecraft TD because TagAPI is needed for this plugin to work.");
+			getServer().getPluginManager().disablePlugin(this);
+		}
+		if(!new File("plugins/MinecraftTD/config.yml").exists()){
 			saveResource("config.yml", false);
 		}
+
 	}
 
-	public void registerListeners(){
+	private void registerListeners(){
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(new Events(this), this);
 		pm.registerEvents(new Upgrade(this), this);
 	}
 
-	public void sendHelp(Player p){ // 10 lines per help page. REMEMBER
-		if(!p.hasPermission("td.*") || p.isOp()){ // 53 letters per line.
-			tell(p, "§6§l================== §9§oMCTD Help§r§6§l ===================");// 1
-			tell(p, "§9/td §1: §6Shows this page"); // 2
-			tell(p, "§9/td join <arena> §1: §6Join your desired arena"); // 3
-			tell(p, "§9/td start §1: §6Flag yourself as ready.");// 4
+	public void sendHelp(Player p){
+		if(!p.hasPermission("td.*") || !p.isOp()){
+			tell(p, "§6§l================== §9§oMCTD Help§r§6§l ===================");
+			tell(p, "§9/td §1: §6Shows this page");
+			tell(p, "§9/td join <arena> §1: §6Join your desired arena");
+			tell(p, "§9/td start §1: §6Flag yourself as ready.");
 			tell(p, "§9/td team <blue | red | leave> §1: §6Join a team, or leave the team");
 			tell(p, "§9/td buy <tower> §1: §6Buy the specified tower");
 			tell(p, "§9/td list §1: §6List the available towers");
-			tell(p, "§6§l================== §9§oMCTD Help§r§6§l ===================");// 1
+			tell(p, "§6§l================== §9§oMCTD Help§r§6§l ===================");
 		} else {
-			tell(p, "§6§l================== §9§oMCTD Help§r§6§l ===================");// 1
-			tell(p, "§9/td §1: §6Shows this page");// 2
-			tell(p, "§9/td setspawn <arena> <blue | red> §1: §6Set the spawn for a team"); // 3
-			tell(p, "§9/td join <arena> §1: §6Join your desired arena"); // 4
-			tell(p, "§9/td start §1: §6Flag yourself as ready.");// 5
-			tell(p, "§9/td team <blue | red | leave> §1: §6Join a team, or leave the team"); // 6
-			tell(p, "§9/td buy <tower> §1: §6Buy the specified tower"); // 7
-			tell(p, "§9/td list §1: §6List the available towers"); // 8
+			tell(p, "§6§l================== §9§oMCTD Help§r§6§l ===================");
+			tell(p, "§9/td §1: §6Shows this page");
+			tell(p, "§9/td setspawn <arena> <blue | red> §1: §6Set the spawn for a team");
+			tell(p, "§9/td join <arena> §1: §6Join your desired arena");
+			tell(p, "§9/td start §1: §6Flag yourself as ready.");
+			tell(p, "§9/td team <blue | red | leave> §1: §6Join a team, or leave the team");
+			tell(p, "§9/td buy <tower> §1: §6Buy the specified tower");
+			tell(p, "§9/td list §1: §6List the available towers");
 			tell(p, "§9/td points <add | take | set | player> §1: §6Add, set, take or check points");
 			tell(p, "§6§l================== §9§oMCTD Help§r§6§l ===================");
-		}// 1
+		}
 	}
 
+	private boolean TagAPI(PluginManager pm) {
+		Plugin tag = pm.getPlugin("TagAPI");
+		if(tag != null && tag instanceof TagAPI){
+			getLogger().info("Loaded TagAPI v" + tag.getDescription().getVersion()
+					+ " now allowing coloured tags.");
+			getLogger().info("Hooked into TagAPI. - Allowing coloured name tags.");
+			return true;
+		} else {
+			getLogger().severe("TagAPI cannot be found. Disabling MCTD.");
+			pm.disablePlugin(this);
+			return false;
+		}
+	}
 
-	public void setupTimer(){
+	private void setupTimer(){
 		Bukkit.getServer().getScheduler().runTaskTimer(this, new Runnable(){
 			@Override
 			public void run() {
@@ -77,15 +103,13 @@ public class MCTD extends JavaPlugin {
 		}, 0L, 10L);
 	}
 
-	public void infiniteDurability() {
-		Bukkit.getServer().getScheduler().runTaskTimer(this, new Runnable(){
-			@Override
-			public void run() {
-				for(Player p : Bukkit.getOnlinePlayers())
-					for(ItemStack i : p.getInventory().getContents())
-						i.setDurability((short)999999999);
-			}
-		}, 0L, 20L);
+	@SuppressWarnings("deprecation")
+	private void infDurability(){
+		for(Player s : Bukkit.getOnlinePlayers()){
+			for(ItemStack ia : s.getInventory().getArmorContents())
+				ia.setDurability(ia.getType().getMaxDurability());
+			s.updateInventory();
+		}
 	}
 
 	public void sendAll(String message){
