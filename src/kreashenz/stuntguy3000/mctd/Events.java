@@ -116,8 +116,7 @@ public class Events implements Listener {
 					p.teleport(loc);
 				}
 			}
-		}
-		if(plugin.teams.playerIsOnRed(p)){
+		} else if(plugin.teams.playerIsOnRed(p)){
 			if(a.getString("Red.spawn") == null){
 				plugin.error(p, "There is no spawn location for the §4Red §cteam.");
 			} else {
